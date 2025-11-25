@@ -2,22 +2,15 @@ using BespokeBikesApi.Data;
 using BespokeBikesApi.Data.Models;
 using BespokeBikesApi.Data.Factories;
 
-
 namespace BespokeBikesApi.Logic {
     
-    public class CustomerService : Interfaces.ICustomerService
+    public class CustomerService
     {
-        private ISalesContextFactory _contextFactory;
+        private IBespokeBikesContextFactory _contextFactory;
 
-        public CustomerService(ISalesContextFactory contextFactory)
+        public CustomerService(IBespokeBikesContextFactory contextFactory)
         {
             _contextFactory = contextFactory;
-        }
-
-        public Customer GetCustomerById(int id)
-        {
-            using var context = _contextFactory.CreateDbContext();
-            return context.Customers.Find(id);
         }
 
         public int AddCustomer(Customer customer)
@@ -26,6 +19,12 @@ namespace BespokeBikesApi.Logic {
             context.Customers.Add(customer);
             context.SaveChanges();
             return customer.Id;
+        }
+
+        public Customer GetCustomerById(int id)
+        {
+            using var context = _contextFactory.CreateDbContext();
+            return context.Customers.Find(id);
         }
 
         public bool UpdateCustomer(Customer customer)

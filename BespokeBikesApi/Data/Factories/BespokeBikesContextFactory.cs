@@ -6,10 +6,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace BespokeBikesApi.Data.Factories {
     
-    public class SalesContextFactory : ISalesContextFactory {
+    public class BespokeBikesContextFactory : IBespokeBikesContextFactory {
         private readonly IConfiguration _configuration;
 
-        public SalesContextFactory() {
+        public BespokeBikesContextFactory() {
 
             var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
             var builder = new ConfigurationBuilder()
@@ -20,33 +20,33 @@ namespace BespokeBikesApi.Data.Factories {
 
             if (environmentName == "Development")
             {
-                builder.AddUserSecrets<SalesContext>();
+                builder.AddUserSecrets<BespokeBikesContext>();
             }
 
             _configuration = builder.Build();
         }
         
-        public SalesContextFactory(IConfiguration configuration) {
+        public BespokeBikesContextFactory(IConfiguration configuration) {
             _configuration = configuration;
         }
 
-        public SalesContext CreateDbContext() {
+        public BespokeBikesContext CreateDbContext() {
             var databaseType = _configuration.GetValue<string>("DatabaseType");
-            ISalesContextOptionsFactory optionsFactory;
+            IBespokeBikesContextOptionsFactory optionsFactory;
 
             if (databaseType == "Sqlite") {
-                optionsFactory = new SalesContextSqliteOptionsFactory(_configuration);
+                optionsFactory = new BespokeBikesContextSqliteOptionsFactory(_configuration);
             } else if (databaseType == "PostgreSQL") {
-                optionsFactory = new SalesContextPostgresOptionsFactory(_configuration);
+                optionsFactory = new BespokeBikesContextPostgresOptionsFactory(_configuration);
             } else {
                 throw new InvalidOperationException("Unsupported database type");
             }
 
             var options = optionsFactory.CreateDbContextOptions();
-            return new SalesContext(options);
+            return new BespokeBikesContext(options);
         }
 
-        public SalesContext CreateDbContext(string[] args) {
+        public BespokeBikesContext CreateDbContext(string[] args) {
             return CreateDbContext();
         }
 

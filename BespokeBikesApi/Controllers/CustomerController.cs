@@ -17,9 +17,9 @@ public class CustomerController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create()
+    public IActionResult Create([FromBody] Customer customer)
     {
-        throw new NotImplementedException();
+        return _customerService.AddCustomer(customer) > 0 ? Ok(customer.Id) : BadRequest();
     }
 
     [HttpGet("{id}")]
@@ -28,9 +28,9 @@ public class CustomerController : ControllerBase
         return _customerService.GetCustomerById(id);
     }
 
-    [HttpPatch]
-    public IActionResult Update()
+    [HttpPut]
+    public IActionResult Update([FromBody] Customer customer)
     {
-        throw new NotImplementedException();
+        return _customerService.UpdateCustomer(customer) ? Ok() : BadRequest();
     }
 }

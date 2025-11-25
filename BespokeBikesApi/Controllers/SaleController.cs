@@ -1,6 +1,7 @@
 namespace BespokeBikesApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using BespokeBikesApi.Data.Models;
+using BespokeBikesApi.Logic;
 
 [ApiController]
 [Route("[controller]")]
@@ -14,13 +15,13 @@ public class SaleController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create()
+    public IActionResult Create([FromBody] Sale sale)
     {
         throw new NotImplementedException();
     }
 
-    [HttpGet]
-    public Sale Read()
+    [HttpGet("{id}")]
+    public Sale Read(int id)
     {
         throw new NotImplementedException();
     }

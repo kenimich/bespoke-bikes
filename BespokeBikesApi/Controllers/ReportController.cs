@@ -1,5 +1,6 @@
 namespace BespokeBikesApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using BespokeBikesApi.Logic;
 using BespokeBikesApi.Logic.DTO;
 
 [ApiController]

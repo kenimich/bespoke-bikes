@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BespokeBikesApi.Tests.Data {
 
-    public class SalesContext_CreateAndFind_Tests
+    public class BespokeBikesContextTests
     {
-        private readonly SalesContextInMemoryFactory _contextFactory;
+        private readonly BespokeBikesContextInMemoryFactory _contextFactory;
 
-        public SalesContext_CreateAndFind_Tests()
+        public BespokeBikesContextTests()
         {
-            _contextFactory = new SalesContextInMemoryFactory("SalesContext_CreateAndFind_TestDatabase");
+            _contextFactory = new BespokeBikesContextInMemoryFactory("BespokeBikesContextTests_Database");
         }
 
         [Fact(DisplayName = "Create and Find Customer")]

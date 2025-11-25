@@ -11,7 +11,7 @@ namespace BespokeBikesApi.Tests.Logic {
 
         public CustomerServiceTests()
         {
-            var contextFactory = new SalesContextInMemoryFactory("CustomerServiceTests_Database");
+            var contextFactory = new BespokeBikesContextInMemoryFactory("CustomerServiceTests_Database");
             _customerService = new CustomerService(contextFactory);
         }
 

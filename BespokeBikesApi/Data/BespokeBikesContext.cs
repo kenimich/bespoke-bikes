@@ -3,7 +3,7 @@ using BespokeBikesApi.Data.Models;
 
 namespace BespokeBikesApi.Data
 {
-    public class SalesContext :  DbContext
+    public class BespokeBikesContext :  DbContext
     {
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Salesperson> Salespersons { get; set; }
@@ -11,7 +11,7 @@ namespace BespokeBikesApi.Data
         public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Sale> Sales { get; set; }
 
-        public SalesContext(DbContextOptions<SalesContext> options) : base(options)
+        public BespokeBikesContext(DbContextOptions<BespokeBikesContext> options) : base(options)
         {
         }
     }

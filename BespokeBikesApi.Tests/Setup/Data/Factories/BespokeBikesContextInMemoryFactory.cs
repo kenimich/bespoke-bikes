@@ -4,39 +4,39 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BespokeBikesApi.Tests.Setup.Data.Factories {
 
-    public class SalesContextInMemoryFactory : ISalesContextFactory
+    public class BespokeBikesContextInMemoryFactory : IBespokeBikesContextFactory
     {
         private readonly string _databaseName;
 
-        public SalesContextInMemoryFactory()
+        public BespokeBikesContextInMemoryFactory()
         {
             _databaseName = "InMemorySalesTestDatabase";
         }
 
-        public SalesContextInMemoryFactory(string databaseName)
+        public BespokeBikesContextInMemoryFactory(string databaseName)
         {
             _databaseName = databaseName;
         }
 
-        public SalesContext CreateDbContext()
+        public BespokeBikesContext CreateDbContext()
         {
-            var options = new DbContextOptionsBuilder<SalesContext>()
+            var options = new DbContextOptionsBuilder<BespokeBikesContext>()
                 .UseInMemoryDatabase(databaseName: _databaseName)
                 .Options;
 
-            return new SalesContext(options);
+            return new BespokeBikesContext(options);
         }
         
-        public SalesContext CreateDbContext(string[] args)
+        public BespokeBikesContext CreateDbContext(string[] args)
         {
             if(args != null && args.Length > 0)
             {
                 //the expected argument is the database name
-                var options = new DbContextOptionsBuilder<SalesContext>()
+                var options = new DbContextOptionsBuilder<BespokeBikesContext>()
                     .UseInMemoryDatabase(databaseName: args[0])
                     .Options;
 
-                return new SalesContext(options);
+                return new BespokeBikesContext(options);
             }
 
             return CreateDbContext();

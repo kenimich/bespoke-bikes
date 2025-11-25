@@ -6,17 +6,17 @@ using Microsoft.EntityFrameworkCore.Sqlite;
 
 namespace BespokeBikesApi.Data.Factories
 {
-    public class SalesContextSqliteOptionsFactory : ISalesContextOptionsFactory
+    public class BespokeBikesContextSqliteOptionsFactory : IBespokeBikesContextOptionsFactory
     {
         private readonly IConfiguration _configuration;
 
-        public SalesContextSqliteOptionsFactory(IConfiguration configuration)
+        public BespokeBikesContextSqliteOptionsFactory(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public DbContextOptions<SalesContext> CreateDbContextOptions() {
-            var optionsBuilder = new DbContextOptionsBuilder<SalesContext>();
+        public DbContextOptions<BespokeBikesContext> CreateDbContextOptions() {
+            var optionsBuilder = new DbContextOptionsBuilder<BespokeBikesContext>();
             optionsBuilder.UseSqlite(_configuration.GetConnectionString("SqliteConnection"));
             return optionsBuilder.Options;
         }
