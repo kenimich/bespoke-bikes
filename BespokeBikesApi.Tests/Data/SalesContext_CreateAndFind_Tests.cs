@@ -1,25 +1,24 @@
+using System.ComponentModel.DataAnnotations;
 using BespokeBikesApi.Data;
 using BespokeBikesApi.Data.Models;
+using BespokeBikesApi.Tests.Setup.Data.Factories;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace BespokeBikesApi.Tests.Data {
 
-    public class SalesContextTests_InMemory_CreateAndFind
+    public class SalesContext_CreateAndFind_Tests
     {
-        private readonly DbContextOptions<SalesContext> _options;
+        private readonly SalesContextInMemoryFactory _contextFactory;
 
-        public SalesContextTests_InMemory_CreateAndFind()
+        public SalesContext_CreateAndFind_Tests()
         {
-            _options = new DbContextOptionsBuilder<SalesContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
+            _contextFactory = new SalesContextInMemoryFactory("SalesContext_CreateAndFind_TestDatabase");
         }
 
-        [Fact]
+        [Fact(DisplayName = "Create and Find Customer")]
         public void Customer()
         {
-            using(var context = new SalesContext(_options))
+            using(var context = _contextFactory.CreateDbContext())
             {
                 context.Customers.Add(new Customer {
                     Name = "Test Customer", 
@@ -35,10 +34,10 @@ namespace BespokeBikesApi.Tests.Data {
             }            
         }
 
-        [Fact]
+        [Fact(DisplayName = "Create and Find Product")]
         public void Product()
         {
-            using(var context = new SalesContext(_options))
+            using(var context = _contextFactory.CreateDbContext())
             {
                 context.Products.Add(new Product {
                     Name = "Test Product", 
@@ -52,10 +51,10 @@ namespace BespokeBikesApi.Tests.Data {
             }
         }
 
-        [Fact]
+        [Fact(DisplayName = "Create and Find Salesperson")]
         public void Salesperson()
         {
-            using(var context = new SalesContext(_options))
+            using(var context = _contextFactory.CreateDbContext())
             {
                 context.Salespersons.Add(new Salesperson {
                     Name = "Test Salesperson", 
@@ -69,10 +68,10 @@ namespace BespokeBikesApi.Tests.Data {
             }
         }
 
-        [Fact]
+        [Fact(DisplayName = "Create and Find Inventory")]
         public void Inventory()
         {
-            using(var context = new SalesContext(_options))
+            using(var context = _contextFactory.CreateDbContext())
             {
                 context.Products.Add(new Product {
                     Name = "Test Product 2", 
@@ -100,10 +99,10 @@ namespace BespokeBikesApi.Tests.Data {
             }
         }
 
-        [Fact]
+        [Fact(DisplayName = "Create and Find Sale")]
         public void Sale()
         {
-            using(var context = new SalesContext(_options))
+            using(var context = _contextFactory.CreateDbContext())
             {
                 // First, create necessary related entities
                 var product = new Product { Name = "Test Product 3", CommissionPercentage = 0.15m };
