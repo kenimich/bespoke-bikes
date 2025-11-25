@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "aJQ6ewjiQzM=",
+  "success": true,
+  "projectFilePath": "E:\\Repos\\bespoke-bikes\\BespokeBikes\\BespokeBikes.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Kenitra Lake\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.9\\microsoft.aspnetcore.openapi.9.0.9.nupkg.sha512",
+    "C:\\Users\\Kenitra Lake\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}
