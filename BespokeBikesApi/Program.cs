@@ -2,6 +2,7 @@ using BespokeBikesApi.Data.Factories;
 using BespokeBikesApi.Logic;
 using BespokeBikesApi.Logic.Reports;
 using Microsoft.OpenApi;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,10 @@ builder.Services.AddSwaggerGen(
             Version = "v1",
             Description = "API for managing Bespoke Bikes sales and operations."
         });
+        
+
+        var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
     }
 );
 

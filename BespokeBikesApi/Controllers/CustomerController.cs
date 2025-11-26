@@ -16,13 +16,22 @@ public class CustomerController : ControllerBase
         _customerService = customerService;
     }
 
+    /// <summary>
+    /// Creates a new customer.
+    /// </summary>
+    /// <param name="customer">Customer to create.</param>
+    /// <response code="201">Customer created — returns the created Customer with Location header.</response>
+    /// <response code="400">Bad request, validation or creation failed.</response>
     [HttpPost]
-    public IActionResult Create([FromBody] Customer customer)
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(Customer), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public ActionResult<Customer> Create([FromBody] Customer customer)
     {
-        return _customerService.AddCustomer(customer) > 0 ? Ok(customer.Id) : BadRequest();
+        return _customerService.AddCustomer(customer) > 0 ? CreatedAtRoute("GetCustomerById", new { id = customer.Id }, customer) : BadRequest();
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}", Name = "GetCustomerById")]
     public Customer Read(int id)
     {
         return _customerService.GetCustomerById(id);

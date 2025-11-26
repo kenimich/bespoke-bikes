@@ -20,7 +20,7 @@ public class ProductController : ControllerBase
     public IActionResult Create([FromBody] Product product)
     {
         
-        return _productService.AddProduct(product) > 0 ? Ok(product.Id) : BadRequest();
+        return _productService.AddProduct(product) > 0 ? new JsonResult(product) : BadRequest();
     }
 
     [HttpGet("{id}")]

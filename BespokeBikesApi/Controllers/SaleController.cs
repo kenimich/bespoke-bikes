@@ -19,7 +19,7 @@ public class SaleController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] Sale sale)
     {
-        return _saleService.AddSale(sale) > 0 ? Ok(sale.Id) : BadRequest();
+        return _saleService.AddSale(sale) > 0 ? new JsonResult(sale) : BadRequest();
     }
 
     [HttpGet("{id}")]
