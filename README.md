@@ -34,7 +34,7 @@ You are tasked with designing and implementing the API layer and supporting back
 
 ### Database Design
 
-- In order to make the store's inventory extensibile, a `Products` table was created instead of a Bicycle table.
+- In order to make the store's inventory extensible, a `Products` table was created instead of a Bicycle table.
 - All Bicycles will have the Type `Bicycle` in the `Products` table.
 - An `Inventory` table was created since the `PurchasePrice` may be different per `PurchaseDate` of each Product. This table holds the information specific to each individual purchase of a product from a manufacturer.
 - A `Sale` is tied to the `Product` record as this will allow for a single `ProductId` to be used for all purchases of that Product, making it easier for users to enter sales.
@@ -56,3 +56,20 @@ This is a light-weight relational database implementation that can be used to ea
 #### InMemory Database
 
 ## How to Run
+
+### Generate Database
+
+Create a User Secret to store the database connection in. Since this is only Sqlite, and a local file, the command is below.
+> Note: This should be run in the BespokeBikesApi folder.
+
+```console
+dotnet user-secrets set "ConnectionStrings:SqliteConnection" "Data Source=Sales.db"
+```
+
+The database file for the local development is not included in the source control, so you will need to run the following command to generate it.
+> Note: This should be run in the BespokeBikesApi folder.
+
+```console
+dotnet tool install --global dotnet-ef
+dotnet ef database update
+```

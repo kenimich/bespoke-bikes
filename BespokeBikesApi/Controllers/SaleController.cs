@@ -19,12 +19,32 @@ public class SaleController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] Sale sale)
     {
-        return _saleService.AddSale(sale) > 0 ? new JsonResult(sale) : BadRequest();
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        return _saleService.AddSale(sale) > 0 ? 
+            CreatedAtRoute("GetSaleById", new { id = sale.Id }, sale) 
+            : BadRequest();
     }
 
-    [HttpGet("{id}")]
-    public Sale Read(int id)
+    [HttpGet("{id}", Name = "GetSaleById")]
+    public ActionResult<Sale> Read(int id)
     {
         return _saleService.GetSaleById(id);
+    }
+
+    [HttpGet("{startDate}/{endDate}")]
+    public ActionResult<IEnumerable<Sale>> Read(DateTime startDate, DateTime endDate)
+    {
+        try {
+            return _saleService.GetSalesByDateRange(startDate, endDate).ToList();
+        }
+        catch(ArgumentException ex)
+        {
+            ModelState.AddModelError(ex.ParamName ?? "DateRange", ex.Message);
+            return ValidationProblem(ModelState);
+        }
     }
 }

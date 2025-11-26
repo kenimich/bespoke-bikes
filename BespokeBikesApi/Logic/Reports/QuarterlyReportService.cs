@@ -19,7 +19,12 @@ namespace BespokeBikesApi.Logic.Reports
 
             if (quarter < 1 || quarter > 4)
             {
-                throw new ArgumentException("Quarter must be between 1 and 4.");
+                throw new ArgumentException("Quarter must be between 1 and 4.", nameof(quarter));
+            }
+
+            if(year < 0 || year > DateTime.Now.Year)
+            {
+                throw new ArgumentException("Year is out of valid range.", nameof(year));
             }
             
             using var context = _contextFactory.CreateDbContext();
@@ -27,7 +32,7 @@ namespace BespokeBikesApi.Logic.Reports
             var salesperson = context.Salespersons.Find(salespersonId);
             if (salesperson == null)
             {
-                throw new ArgumentException($"Salesperson with ID {salespersonId} not found.");
+                throw new ArgumentException($"Salesperson with ID {salespersonId} not found.", nameof(salespersonId));
             }
 
             var startDate = new DateTime(year, (quarter - 1) * 3 + 1, 1);

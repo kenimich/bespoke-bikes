@@ -2,6 +2,7 @@ using BespokeBikesApi.Data.Models;
 using BespokeBikesApi.Tests.Setup.Data.Factories;
 using BespokeBikesApi.Logic.Reports;
 using BespokeBikesApi.Logic.DTO;
+using System.ComponentModel.Design.Serialization;
 
 namespace BespokeBikesApi.Tests.Logic {
 
@@ -26,8 +27,8 @@ namespace BespokeBikesApi.Tests.Logic {
             context.Salespersons.AddRange(sales_alice, sales_bob);
             context.SaveChanges();
 
-            var bike_mtn = new Product { Name = "Mountain Bike", CommissionPercentage = 0.10m };
-            var bike_road = new Product { Name = "Road Bike", CommissionPercentage = 0.15m };
+            var bike_mtn = new Product { Type = "Bicycle", Name = "Mountain Bike", CommissionPercentage = 0.10m };
+            var bike_road = new Product { Type = "Bicycle", Name = "Road Bike", CommissionPercentage = 0.15m };
             context.Products.AddRange(bike_mtn, bike_road);
             context.SaveChanges();
 
@@ -71,19 +72,33 @@ namespace BespokeBikesApi.Tests.Logic {
         [InlineData(1, 2025, 5)]
         public void GetQuarterlyReport_InvalidQuarter_ThrowsException(int salespersonId, int year, int quarter)
         {
-            Assert.Throws<ArgumentException>(() =>
+            var execption = Assert.Throws<ArgumentException>(() =>
             {
                 _quarterlyReportService.GetQuarterlyReport(salespersonId, year, quarter);
             });
+            Assert.Equal("Quarter must be between 1 and 4. (Parameter 'quarter')", execption.Message);
+        }
+
+        [Theory(DisplayName = "Get Quarterly Report with Invalid Year Throws Exception")]
+        [InlineData(1, -5, 2)]
+        [InlineData(2, 3000, 3)]
+        public void GetQuarterlyReport_InvalidYear_ThrowsException(int salespersonId, int year, int quarter)
+        {
+            var exception = Assert.Throws<ArgumentException>(() =>
+            {
+                _quarterlyReportService.GetQuarterlyReport(salespersonId, year, quarter);
+            });
+            Assert.Equal("Year is out of valid range. (Parameter 'year')", exception.Message);
         }
 
         [Fact(DisplayName = "Get Quarterly Report for Non-Existent Salesperson Throws Exception")]
         public void GetQuarterlyReport_NonExistentSalesperson_ThrowsException()
         {
-            Assert.Throws<ArgumentException>(() =>
+            var exception = Assert.Throws<ArgumentException>(() =>
             {
                 _quarterlyReportService.GetQuarterlyReport(9999, 2025, 1);
             });
+            Assert.Equal("Salesperson with ID 9999 not found. (Parameter 'salespersonId')", exception.Message);
         }
     }
 }

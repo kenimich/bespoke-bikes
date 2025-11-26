@@ -17,8 +17,15 @@ public class ReportController : ControllerBase
     }
 
     [HttpGet("quarterly/{salespersonId}/{year}/{quarter}")]
-    public QuarterlyReport Read(int salespersonId, int year, int quarter)
+    public ActionResult<QuarterlyReport> Read(int salespersonId, int year, int quarter)
     {
-        return _quarterlyReportService.GetQuarterlyReport(salespersonId, year, quarter);
+        try {
+            return _quarterlyReportService.GetQuarterlyReport(salespersonId, year, quarter);
+        }
+        catch(ArgumentException ex)
+        {
+            ModelState.AddModelError(ex.ParamName ?? "ReportParameters", ex.Message);
+            return ValidationProblem(ModelState);
+        }
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BespokeBikesApi.Migrations
 {
     [DbContext(typeof(BespokeBikesContext))]
-    [Migration("20251126014728_InitialCreate")]
+    [Migration("20251126035939_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -38,6 +38,9 @@ namespace BespokeBikesApi.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name", "Contact")
+                        .IsUnique();
 
                     b.ToTable("Customers");
                 });
@@ -78,7 +81,14 @@ namespace BespokeBikesApi.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Type", "Name")
+                        .IsUnique();
 
                     b.ToTable("Products");
                 });
@@ -127,6 +137,9 @@ namespace BespokeBikesApi.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name", "EmployeeId")
+                        .IsUnique();
 
                     b.ToTable("Salespersons");
                 });

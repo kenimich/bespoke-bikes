@@ -22,6 +22,7 @@ namespace BespokeBikesApi.Tests.Setup.Data.Factories {
         {
             var options = new DbContextOptionsBuilder<BespokeBikesContext>()
                 .UseInMemoryDatabase(databaseName: _databaseName)
+                .EnableSensitiveDataLogging()
                 .Options;
 
             return new BespokeBikesContext(options);

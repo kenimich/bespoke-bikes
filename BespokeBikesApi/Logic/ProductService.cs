@@ -16,6 +16,12 @@ namespace BespokeBikesApi.Logic
         public int AddProduct(Product product)
         {
             using var context = _contextFactory.CreateDbContext();
+
+            if(context.Products.Any(p => p.Name == product.Name))
+            {
+                throw new ArgumentException("Product Name must be unique.", nameof(Product.Name));
+            }
+
             context.Products.Add(product);
             context.SaveChanges();
             return product.Id;
@@ -30,6 +36,12 @@ namespace BespokeBikesApi.Logic
         public bool UpdateProduct(Product product)
         {
             using var context = _contextFactory.CreateDbContext();
+
+            if(context.Products.Any(p => p.Name == product.Name && p.Id != product.Id))
+            {
+                throw new ArgumentException("Product Name must be unique.", nameof(Product.Name));
+            }
+
             context.Products.Update(product);
             context.SaveChanges();
             return true;

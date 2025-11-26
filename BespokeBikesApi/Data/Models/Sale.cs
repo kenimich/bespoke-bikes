@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace BespokeBikesApi.Data.Models
 {
@@ -7,14 +8,25 @@ namespace BespokeBikesApi.Data.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("Product")]
+
+        [Required]
+        [ForeignKey(nameof(Product.Id))]
         public int ProductId { get; set; }
-        [ForeignKey("Customer")]
+
+        [Required]
+        [ForeignKey(nameof(Customer.Id))]
         public int CustomerId { get; set; }
-        [ForeignKey("Salesperson")]
+
+        [Required]
+        [ForeignKey(nameof(Salesperson.Id))]
         public int SalespersonId { get; set; }
+        
+        [Required]
         public DateTime SaleDate { get; set; }
+
+        [Required]
         public decimal SalePrice { get; set; }
+
         public decimal Commission { get; set; }
     }
 }

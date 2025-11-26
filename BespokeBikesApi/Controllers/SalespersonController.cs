@@ -24,11 +24,25 @@ public class SalespersonController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] Salesperson salesperson)
     {
-        return _salespersonService.AddSalesperson(salesperson) > 0 ? new JsonResult(salesperson) : BadRequest();
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        try {
+            return _salespersonService.AddSalesperson(salesperson) > 0 ? 
+                CreatedAtRoute("GetSalespersonById", new { id = salesperson.Id }, salesperson) 
+                : BadRequest();
+        }
+        catch(ArgumentException ex)
+        {
+            ModelState.AddModelError(ex.ParamName ?? nameof(Salesperson), ex.Message);
+            return ValidationProblem(ModelState);
+        }
     }
 
-    [HttpGet("{id}")]
-    public Salesperson Read(int id)
+    [HttpGet("{id}", Name = "GetSalespersonById")]
+    public ActionResult<Salesperson> Read(int id)
     {
         return _salespersonService.GetSalespersonById(id);
     }
@@ -36,6 +50,18 @@ public class SalespersonController : ControllerBase
     [HttpPut]
     public IActionResult Update([FromBody] Salesperson salesperson)
     {
-        return _salespersonService.UpdateSalesperson(salesperson) ? Ok() : BadRequest();
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        try {
+            return _salespersonService.UpdateSalesperson(salesperson) ? Ok() : BadRequest();
+        }
+        catch(ArgumentException ex)
+        {
+            ModelState.AddModelError(ex.ParamName ?? nameof(Salesperson), ex.Message);
+            return ValidationProblem(ModelState);
+        }
     }
 }

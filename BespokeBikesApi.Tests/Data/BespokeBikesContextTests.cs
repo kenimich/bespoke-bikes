@@ -40,6 +40,7 @@ namespace BespokeBikesApi.Tests.Data {
             using(var context = _contextFactory.CreateDbContext())
             {
                 context.Products.Add(new Product {
+                    Type = "Bicycle",
                     Name = "Test Product", 
                     CommissionPercentage = 0.1m
                     });
@@ -74,17 +75,19 @@ namespace BespokeBikesApi.Tests.Data {
             using(var context = _contextFactory.CreateDbContext())
             {
                 context.Products.Add(new Product {
+                    Type = "Bicycle",
                     Name = "Test Product 2", 
                     CommissionPercentage = 0.2m
                     });
 
                 context.SaveChanges();
                 var product = context.Products.Where(product => product.Name == "Test Product 2").FirstOrDefault();
+                Assert.Equal("Bicycle", product?.Type);
                 Assert.Equal("Test Product 2", product?.Name);
                 Assert.Equal(0.2m, product?.CommissionPercentage);
 
                 context.Inventories.Add(new Inventory {
-                    ProductId = product.Id,
+                    ProductId = product!.Id,
                     Quantity = 10,
                     PurchasePrice = 500.00m,
                     PurchaseDate = new DateTime(2024, 1, 1)
@@ -92,7 +95,8 @@ namespace BespokeBikesApi.Tests.Data {
 
                 context.SaveChanges();
                 var inventory = context.Inventories.Find(1);
-                Assert.Equal(product.Id, inventory?.ProductId);
+                Assert.NotNull(inventory);
+                Assert.Equal(product?.Id, inventory?.ProductId);
                 Assert.Equal(10, inventory?.Quantity);
                 Assert.Equal(500.00m, inventory?.PurchasePrice);
                 Assert.Equal(new DateTime(2024, 1, 1), inventory?.PurchaseDate);
@@ -105,7 +109,7 @@ namespace BespokeBikesApi.Tests.Data {
             using(var context = _contextFactory.CreateDbContext())
             {
                 // First, create necessary related entities
-                var product = new Product { Name = "Test Product 3", CommissionPercentage = 0.15m };
+                var product = new Product { Type = "Bicycle", Name = "Test Product 3", CommissionPercentage = 0.15m };
                 var customer = new Customer { Name = "Test Customer 2", Contact = "kenimich@gmail.com", ContactType = ContactType.Email };
                 var salesperson = new Salesperson { Name = "Test Salesperson 2", EmployeeId = "EMP002" };
                 context.Products.Add(product);

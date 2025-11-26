@@ -7,8 +7,11 @@ namespace BespokeBikesApi.Data.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("Product")]
+
+        [Required]
+        [ForeignKey(nameof(Product.Id))]
         public int ProductId { get; set; }
+
         public int Quantity { get; set; }
         public decimal PurchasePrice { get; set; }
         public DateTime PurchaseDate { get; set; }

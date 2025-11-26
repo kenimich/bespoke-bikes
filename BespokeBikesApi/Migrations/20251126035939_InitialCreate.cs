@@ -48,6 +48,7 @@ namespace BespokeBikesApi.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    Type = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     CommissionPercentage = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
@@ -87,6 +88,24 @@ namespace BespokeBikesApi.Migrations
                 {
                     table.PrimaryKey("PK_Salespersons", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_Name_Contact",
+                table: "Customers",
+                columns: new[] { "Name", "Contact" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_Type_Name",
+                table: "Products",
+                columns: new[] { "Type", "Name" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Salespersons_Name_EmployeeId",
+                table: "Salespersons",
+                columns: new[] { "Name", "EmployeeId" },
+                unique: true);
         }
 
         /// <inheritdoc />

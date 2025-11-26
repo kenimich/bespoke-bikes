@@ -76,5 +76,52 @@ namespace BespokeBikesApi.Tests.Logic {
             Assert.Equal("Last Name Changed", updatedSalesperson.Name);
             Assert.Equal("EMP678", updatedSalesperson.EmployeeId);
         }
+
+        [Fact(DisplayName = "Create Duplicate Salesperson Using Service Throws Exception")]
+        public void CreateDuplicateSalespersonThrowsException()
+        {
+            var salespersonId = _salespersonService.AddSalesperson(new Salesperson {
+                Name = "Service Test Salesperson 4", 
+                EmployeeId = "EMP901"
+                });
+
+            Assert.True(salespersonId > 0, "Salesperson ID should be greater than 0 after creation.");
+
+            var exception = Assert.Throws<ArgumentException>(() => 
+                _salespersonService.AddSalesperson(new Salesperson {
+                    Name = "Service Test Salesperson 4", 
+                    EmployeeId = "EMP901"
+                })
+            );
+
+            Assert.Equal("Name and EmployeeId must be a unique combination. (Parameter 'NameAndEmployeeId')", exception.Message);
+        }
+
+        [Fact(DisplayName = "Update Salesperson to Duplicate Using Service Throws Exception")]
+        public void UpdateSalespersonToDuplicateThrowsException()
+        {
+            var salespersonId1 = _salespersonService.AddSalesperson(new Salesperson {
+                Name = "Service Test Salesperson 5", 
+                EmployeeId = "EMP234"
+                });
+
+            var salespersonId2 = _salespersonService.AddSalesperson(new Salesperson {
+                Name = "Service Test Salesperson 6", 
+                EmployeeId = "EMP567"
+                });
+
+            Assert.True(salespersonId1 > 0, "First Salesperson ID should be greater than 0 after creation.");
+            Assert.True(salespersonId2 > 0, "Second Salesperson ID should be greater than 0 after creation.");
+
+            var exception = Assert.Throws<ArgumentException>(() => 
+                _salespersonService.UpdateSalesperson(new Salesperson {
+                    Id = salespersonId2,
+                    Name = "Service Test Salesperson 5", 
+                    EmployeeId = "EMP234"
+                })
+            );
+
+            Assert.Equal("Name and EmployeeId must be a unique combination. (Parameter 'NameAndEmployeeId')", exception.Message);
+        }
     }
 }

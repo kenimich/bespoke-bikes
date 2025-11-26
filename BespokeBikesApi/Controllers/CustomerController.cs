@@ -2,6 +2,8 @@ namespace BespokeBikesApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using BespokeBikesApi.Data.Models;
 using BespokeBikesApi.Logic;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 [ApiController]
 [Route("[controller]")]
@@ -28,11 +30,26 @@ public class CustomerController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public ActionResult<Customer> Create([FromBody] Customer customer)
     {
-        return _customerService.AddCustomer(customer) > 0 ? CreatedAtRoute("GetCustomerById", new { id = customer.Id }, customer) : BadRequest();
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            return _customerService.AddCustomer(customer) > 0 ? 
+                CreatedAtRoute("GetCustomerById", new { id = customer.Id }, customer) 
+                : BadRequest();
+        }
+        catch(ArgumentException ex)
+        {
+            ModelState.AddModelError(ex.ParamName ?? nameof(Customer), ex.Message);
+            return ValidationProblem(ModelState);
+        }
     }
 
     [HttpGet("{id}", Name = "GetCustomerById")]
-    public Customer Read(int id)
+    public ActionResult<Customer> Read(int id)
     {
         return _customerService.GetCustomerById(id);
     }
@@ -40,6 +57,18 @@ public class CustomerController : ControllerBase
     [HttpPut]
     public IActionResult Update([FromBody] Customer customer)
     {
-        return _customerService.UpdateCustomer(customer) ? Ok() : BadRequest();
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try {
+            return _customerService.UpdateCustomer(customer) ? Ok() : BadRequest();
+        }
+        catch(ArgumentException ex)
+        {
+            ModelState.AddModelError(ex.ParamName ?? nameof(Customer), ex.Message);
+            return ValidationProblem(ModelState);
+        }
     }
 }

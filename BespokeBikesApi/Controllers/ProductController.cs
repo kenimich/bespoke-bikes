@@ -19,12 +19,25 @@ public class ProductController : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] Product product)
     {
-        
-        return _productService.AddProduct(product) > 0 ? new JsonResult(product) : BadRequest();
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try {
+            return _productService.AddProduct(product) > 0 ? 
+                CreatedAtRoute("GetProductById", new { id = product.Id }, product) 
+                : BadRequest();
+        }
+        catch(ArgumentException ex)
+        {
+            ModelState.AddModelError(ex.ParamName ?? nameof(Product), ex.Message);
+            return ValidationProblem(ModelState);
+        }
     }
 
-    [HttpGet("{id}")]
-    public Product Read(int id)
+    [HttpGet("{id}", Name = "GetProductById")]
+    public ActionResult<Product> Read(int id)
     {
         return _productService.GetProductById(id);
     }
@@ -32,6 +45,18 @@ public class ProductController : ControllerBase
     [HttpPut]
     public IActionResult Update([FromBody] Product product)
     {
-        return _productService.UpdateProduct(product) ? Ok() : BadRequest();
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        try {
+            return _productService.UpdateProduct(product) ? Ok() : BadRequest();
+        }
+        catch(ArgumentException ex)
+        {
+            ModelState.AddModelError(ex.ParamName ?? nameof(Product), ex.Message);
+            return ValidationProblem(ModelState);
+        }
     }
 }

@@ -1,6 +1,7 @@
 using BespokeBikesApi.Data;
 using BespokeBikesApi.Data.Models;
 using BespokeBikesApi.Data.Factories;
+using Microsoft.EntityFrameworkCore;
 
 namespace BespokeBikesApi.Logic {
     
@@ -16,6 +17,12 @@ namespace BespokeBikesApi.Logic {
         public int AddCustomer(Customer customer)
         {
             using var context = _contextFactory.CreateDbContext();
+
+            if(context.Customers.Any(c => c.Name == customer.Name && c.Contact == customer.Contact))
+            {
+                throw new ArgumentException("Name and Contact must be a unique combination.", "NameAndContact");
+            }
+
             context.Customers.Add(customer);
             context.SaveChanges();
             return customer.Id;
@@ -29,8 +36,13 @@ namespace BespokeBikesApi.Logic {
 
         public bool UpdateCustomer(Customer customer)
         {
-            //TODO: Attach to database.
             using var context = _contextFactory.CreateDbContext();
+
+            if(context.Customers.Any(c => c.Name == customer.Name && c.Contact == customer.Contact && c.Id != customer.Id))
+            {
+                throw new ArgumentException("Name and Contact must be a unique combination.", "NameAndContact");
+            }
+
             context.Customers.Update(customer);
             context.SaveChanges();
             return true;

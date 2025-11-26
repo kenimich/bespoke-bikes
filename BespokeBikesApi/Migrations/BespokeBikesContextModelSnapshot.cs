@@ -36,6 +36,9 @@ namespace BespokeBikesApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name", "Contact")
+                        .IsUnique();
+
                     b.ToTable("Customers");
                 });
 
@@ -75,7 +78,14 @@ namespace BespokeBikesApi.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Type", "Name")
+                        .IsUnique();
 
                     b.ToTable("Products");
                 });
@@ -124,6 +134,9 @@ namespace BespokeBikesApi.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name", "EmployeeId")
+                        .IsUnique();
 
                     b.ToTable("Salespersons");
                 });
