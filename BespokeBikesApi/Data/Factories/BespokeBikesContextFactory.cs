@@ -20,7 +20,7 @@ namespace BespokeBikesApi.Data.Factories {
 
             if (environmentName == "Development")
             {
-                builder.AddUserSecrets<BespokeBikesContext>();
+                builder.AddUserSecrets<IBespokeBikesContextFactory>();
             }
 
             _configuration = builder.Build();

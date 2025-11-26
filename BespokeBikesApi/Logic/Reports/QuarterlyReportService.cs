@@ -24,7 +24,7 @@ namespace BespokeBikesApi.Logic.Reports
             
             using var context = _contextFactory.CreateDbContext();
 
-            Salesperson salesperson = context.Salespersons.Find(salespersonId);
+            var salesperson = context.Salespersons.Find(salespersonId);
             if (salesperson == null)
             {
                 throw new ArgumentException($"Salesperson with ID {salespersonId} not found.");

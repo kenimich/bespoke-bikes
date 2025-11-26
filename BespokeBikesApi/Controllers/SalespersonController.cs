@@ -28,7 +28,7 @@ public class SalespersonController : ControllerBase
         return _salespersonService.GetSalespersonById(id);
     }
 
-    [HttpPatch]
+    [HttpPut]
     public IActionResult Update([FromBody] Salesperson salesperson)
     {
         return _salespersonService.UpdateSalesperson(salesperson) ? Ok() : BadRequest();
