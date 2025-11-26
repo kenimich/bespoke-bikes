@@ -5,14 +5,22 @@ using BespokeBikesApi.Logic;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
+/// <summary>
+/// The Controller used to create, read, and update customers. 
+/// </summary>
 [ApiController]
 [Route("[controller]")]
 public class CustomerController : ControllerBase
 {
     private readonly ILogger<CustomerController> _logger;
-    private readonly CustomerService _customerService;
+    private readonly ICustomerService _customerService;
 
-    public CustomerController(ILogger<CustomerController> logger, CustomerService customerService)
+    /// <summary>
+    /// Default constructor for the CustomerController class.
+    /// </summary>
+    /// <param name="logger">A logger implementation for creating error logs.</param>
+    /// <param name="customerService">Connection to the business logic for the Customer.</param>
+    public CustomerController(ILogger<CustomerController> logger, ICustomerService customerService)
     {
         _logger = logger;
         _customerService = customerService;
@@ -27,7 +35,7 @@ public class CustomerController : ControllerBase
     [HttpPost]
     [Produces("application/json")]
     [ProducesResponseType(typeof(Customer), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public ActionResult<Customer> Create([FromBody] Customer customer)
     {
         if(!ModelState.IsValid)
@@ -48,13 +56,36 @@ public class CustomerController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Gets a customer by id.
+    /// </summary>
+    /// <param name="id">The id of the customer to retrieve.</param>
+    /// <response code="200">Customer found — returns the matching Customer.</response>
+    /// <response code="404">Customer not found.</response>
     [HttpGet("{id}", Name = "GetCustomerById")]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(Customer), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public ActionResult<Customer> Read(int id)
     {
-        return _customerService.GetCustomerById(id);
+        var customer = _customerService.GetCustomerById(id);
+        if(customer == null)
+        {
+            return NotFound();
+        }
+        return customer;
     }
 
+    /// <summary>
+    /// Updates an existing customer.
+    /// </summary>
+    /// <param name="customer">Customer to update (Id required).</param>
+    /// <response code="200">Customer updated successfully.</response>
+    /// <response code="400">Bad request — validation errors or update failed. Validation responses use ValidationProblemDetails.</response>
     [HttpPut]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
     public IActionResult Update([FromBody] Customer customer)
     {
         if(!ModelState.IsValid)

@@ -1,11 +1,10 @@
-using BespokeBikesApi.Data;
 using BespokeBikesApi.Data.Models;
 using BespokeBikesApi.Data.Factories;
 using Microsoft.EntityFrameworkCore;
 
 namespace BespokeBikesApi.Logic {
     
-    public class CustomerService
+    public class CustomerService : ICustomerService
     {
         private IBespokeBikesContextFactory _contextFactory;
 

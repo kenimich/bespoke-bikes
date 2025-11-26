@@ -82,14 +82,12 @@ namespace BespokeBikesApi.Logic
                 })
                 .FirstOrDefault();
 
-            if(productCurrentInventory == null)
+            if(productCurrentInventory != null)
             {
-                throw new ArgumentException("Product does not exist.", nameof(id));
+                productCurrentInventory.QuantityInStock -= context.Sales
+                    .Where(s => s.ProductId == id)
+                    .Count();
             }
-
-            productCurrentInventory.QuantityInStock -= context.Sales
-                .Where(s => s.ProductId == id)
-                .Count();
 
             return productCurrentInventory;
         }

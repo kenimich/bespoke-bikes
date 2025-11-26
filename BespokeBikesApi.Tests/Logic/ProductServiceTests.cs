@@ -70,9 +70,7 @@ namespace BespokeBikesApi.Tests.Logic {
         [Fact(DisplayName = "Find Non-Existent Product Using Service")]
         public void FindNonExistentProduct()
         {
-            var exception = Assert.Throws<ArgumentException>(() => _productService.GetProductById(9999)); // Assuming this ID does not exist
-            Assert.Equal("Product does not exist. (Parameter 'id')", exception.Message);
-
+            Assert.Null(_productService.GetProductById(9999)); // Assuming this ID does not exist
         }
 
         [Fact(DisplayName = "Update Product Using Service")]
