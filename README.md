@@ -97,9 +97,13 @@ Code-First Entity Framework was chosen to give the C# code full control of the r
 
 ### DataContext Factories
 
-The DbContext has several Factories associated with it's initialization. 
+The DbContext has several Factories associated with it's initialization.
 
-The IBespokeBikesContextFactory interface was created to allow for the ContextFactory used to decided between a Sqlite and Postgres Database (Local Dev vs Production) as well as to allow the Tests to be able to implement a In-Memory Database to make tests more stable by having transient data.
+The IBespokeBikesContextFactory interface was created to both
+
+(a) allow the ContextFactory to have an implementation that decided between a Sqlite and Postgres Database (Local Dev vs Production) as well as
+
+(b) to allow the Tests suite to be able to implement a In-Memory Database to make tests more stable by having transient data.
 
 The IBespokeBikesContextOptionsFactory interface was created to prevent the ContextFactory from having to know about the details behind the Sqlite or Postgres implementations of the database connection, and to allow the ContextFactory to simply call the appropriate OptionsBuilder for each implementation depending on the configured database.
 
