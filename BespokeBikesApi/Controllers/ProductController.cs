@@ -2,6 +2,7 @@ namespace BespokeBikesApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using BespokeBikesApi.Data.Models;
 using BespokeBikesApi.Logic;
+using BespokeBikesApi.Logic.DTO;
 
 [ApiController]
 [Route("[controller]")]
@@ -17,7 +18,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] Product product)
+    public IActionResult Create([FromBody] ProductNewInventory product)
     {
         if(!ModelState.IsValid)
         {
@@ -25,8 +26,9 @@ public class ProductController : ControllerBase
         }
 
         try {
-            return _productService.AddProduct(product) > 0 ? 
-                CreatedAtRoute("GetProductById", new { id = product.Id }, product) 
+            var productCurrentInventory = _productService.AddProduct(product);
+            return productCurrentInventory.Id > 0 ? 
+                CreatedAtRoute("GetProductById", new { id = productCurrentInventory.Id }, productCurrentInventory) 
                 : BadRequest();
         }
         catch(ArgumentException ex)
@@ -36,8 +38,26 @@ public class ProductController : ControllerBase
         }
     }
 
+    [HttpPatch]
+    public ActionResult<ProductCurrentInventory> CreateInventory([FromBody] ProductNewInventory product)
+    {
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        
+        try {
+            return _productService.AddInventory(product);
+        }
+        catch(ArgumentException ex)
+        {
+            ModelState.AddModelError(ex.ParamName ?? nameof(Product), ex.Message);
+            return ValidationProblem(ModelState);
+        }
+    }
+
     [HttpGet("{id}", Name = "GetProductById")]
-    public ActionResult<Product> Read(int id)
+    public ActionResult<ProductCurrentInventory> Read(int id)
     {
         return _productService.GetProductById(id);
     }
