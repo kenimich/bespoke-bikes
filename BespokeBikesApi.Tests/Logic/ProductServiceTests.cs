@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using BespokeBikesApi.Data.Models;
 using BespokeBikesApi.Tests.Setup.Data.Factories;
 using BespokeBikesApi.Logic;

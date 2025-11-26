@@ -8,21 +8,23 @@ using BespokeBikesApi.Logic;
 public class SaleController : ControllerBase
 {
     private readonly ILogger<SaleController> _logger;
+    private readonly SaleService _saleService;
 
-    public SaleController(ILogger<SaleController> logger)
+    public SaleController(ILogger<SaleController> logger, SaleService saleService)
     {
         _logger = logger;
+        _saleService = saleService;
     }
 
     [HttpPost]
     public IActionResult Create([FromBody] Sale sale)
     {
-        throw new NotImplementedException();
+        return _saleService.AddSale(sale) > 0 ? Ok(sale.Id) : BadRequest();
     }
 
     [HttpGet("{id}")]
     public Sale Read(int id)
     {
-        throw new NotImplementedException();
+        return _saleService.GetSaleById(id);
     }
 }

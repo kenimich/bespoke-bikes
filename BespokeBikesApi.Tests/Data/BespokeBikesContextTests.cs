@@ -116,7 +116,7 @@ namespace BespokeBikesApi.Tests.Data {
                 context.Sales.Add(new Sale {
                     ProductId = product.Id,
                     CustomerId = customer.Id,
-                    SalesPersonId = salesperson.Id,
+                    SalespersonId = salesperson.Id,
                     SaleDate = new DateTime(2024, 2, 1),
                     SalePrice = 1000.00m,
                     Commission = 150.00m
@@ -125,7 +125,7 @@ namespace BespokeBikesApi.Tests.Data {
                 var sale = context.Sales.Where(s => s.SaleDate == new DateTime(2024, 2, 1)).FirstOrDefault();
                 Assert.Equal(product.Id, sale?.ProductId);
                 Assert.Equal(customer.Id, sale?.CustomerId);
-                Assert.Equal(salesperson.Id, sale?.SalesPersonId);
+                Assert.Equal(salesperson.Id, sale?.SalespersonId);
                 Assert.Equal(new DateTime(2024, 2, 1), sale?.SaleDate);
                 Assert.Equal(1000.00m, sale?.SalePrice);
                 Assert.Equal(150.00m, sale?.Commission);

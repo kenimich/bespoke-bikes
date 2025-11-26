@@ -1,6 +1,6 @@
 namespace BespokeBikesApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using BespokeBikesApi.Logic;
+using BespokeBikesApi.Logic.Reports;
 using BespokeBikesApi.Logic.DTO;
 
 [ApiController]
@@ -8,15 +8,17 @@ using BespokeBikesApi.Logic.DTO;
 public class ReportController : ControllerBase
 {
     private readonly ILogger<ReportController> _logger;
+    private readonly QuarterlyReportService _quarterlyReportService;
 
-    public ReportController(ILogger<ReportController> logger)
+    public ReportController(ILogger<ReportController> logger, QuarterlyReportService quarterlyReportService)
     {
         _logger = logger;
+        _quarterlyReportService = quarterlyReportService;
     }
 
-    [HttpGet("quarterly")]
-    public QuarterlyReport Read()
+    [HttpGet("quarterly/{salespersonId}/{year}/{quarter}")]
+    public QuarterlyReport Read(int salespersonId, int year, int quarter)
     {
-        throw new NotImplementedException();
+        return _quarterlyReportService.GetQuarterlyReport(salespersonId, year, quarter);
     }
 }

@@ -12,7 +12,7 @@ namespace BespokeBikesApi.Data.Models
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
         [ForeignKey("Salesperson")]
-        public int SalesPersonId { get; set; }
+        public int SalespersonId { get; set; }
         public DateTime SaleDate { get; set; }
         public decimal SalePrice { get; set; }
         public decimal Commission { get; set; }
