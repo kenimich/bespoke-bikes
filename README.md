@@ -13,11 +13,15 @@ You are tasked with designing and implementing the API layer and supporting back
 - **Target Framework:** .Net 10.0
 - **API Design:** ASP .NET Controller Web API
 - **Local Database:** Sqlite
+- **Deployment Database:** PostgreSQL
 - **Data Access Layer:** Entity Framework Code-First
 - **Unit Tests:** xUnit v3
   - **Test Database:** In-Memory
+  - **Additional Framework:** Moq
 
 ## How to Run
+
+All the following steps require the [.NET 10.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0).
 
 ### Generate Database
 
@@ -115,8 +119,32 @@ This is a light-weight relational database implementation that can be used to ha
 
 #### XUnit
 
-XUnit was chosen as it has a lot of support in .Net and VSCode, but also allows for testing of Controllers. At the moment there are no Controller test cases, but this was my intent.
+XUnit was chosen as it has a lot of support in .Net and VSCode, but also allows for testing of Controllers. At the moment there is only 1 Controller test suite, but this was my intent.
 
 #### InMemory Database
 
 An In-Memory Database was used for the test cases as it allowed for a relational database that would reset each time the tests were ran.
+
+#### Moq for Services
+
+Moq was added to the Testing Suite in order to be able to better test the output of the contollers, by de-coupling them from the data or business layer.
+
+## Incomplete Items
+
+The following parts of the project are incomplete due to time constraints.
+
+### Test Cases / Interfaces for Controllers
+
+Only the CustomerService has either a interface or test suite due to time constraints, and the fact that controllers can largely be manually tested on the Swagger UI. Given more time, I would have added interfaces for all the Controllers, and tested that they were returning the right IActionResults for each scenario.
+
+### Logging
+
+There is no proper logging added to the project. This would be necessary after it was deployed to a Production environment, and so I would have added a logging/tracing structure to the API had I the time.
+
+### Postgres Connection
+
+There is a weak implementation to connect to a Postgres database, as it was my intent to use it as a Open Source, robust relational database for deploying to a production environment.
+
+### Deployment: Docker and Infrastructure as Code
+
+After the above items were done, it was my intent to create a docker compose file, and package this API into a docker container for deployment to a cloud provider. The Deployment script would most likely have been terraform or a pipeline yaml file for AzureDevOps, but was the last item on my wish-list, and so the decisions were a little more up in the air.
