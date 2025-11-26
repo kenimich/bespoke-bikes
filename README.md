@@ -73,3 +73,23 @@ The database file for the local development is not included in the source contro
 dotnet tool install --global dotnet-ef
 dotnet ef database update
 ```
+
+### Build API
+
+Run the command `dotnet build` in either the root folder or the BespokeBikesApi folder.
+
+### Run API
+
+Run the command `dotnet run` in the BespokeBikesApi folder. Navigate to the localhost url given after "Now listening on: ", and then add "/swagger/index.html" to the end in order to navigate to the swagger page.
+
+### Optional: Run Tests
+
+Run the command `dotnet test .\BespokeBikesApi.Tests\BespokeBikesApi.Tests.csproj` from the root folder, or `dotnet test .\BespokeBikesApi.Tests.csproj` from the BespokeBikesApi.Tests folder.
+
+Alternatively, use the .Net Core Test Explorer extension in Visual Studios Code. To install this extension, run the following commands:
+
+```console
+code --install-extension hbenl.vscode-test-explorer
+code --install-extension ms-vscode.test-adapter-converter
+code --install-extension derivitec-ltd.vscode-dotnet-adapter
+```
