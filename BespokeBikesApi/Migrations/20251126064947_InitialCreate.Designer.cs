@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BespokeBikesApi.Migrations
 {
     [DbContext(typeof(BespokeBikesContext))]
-    [Migration("20251126035939_InitialCreate")]
+    [Migration("20251126064947_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

@@ -483,3 +483,5 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 BespokeBikesApi/Sales.db
+BespokeBikesApi/Sales.db-shm
+BespokeBikesApi/Sales.db-wal
