@@ -28,7 +28,7 @@ public class ReportController : ControllerBase
     /// Retrieves a total commissions for a salesperson per quarter.
     /// </summary>
     /// <param name="salespersonId">The unique identifier of the salesperson.</param>
-    /// <param name="year">The year for the report (e.g., 2024).</param>
+    /// <param name="year">The year for the report (e.g., 2025). Must be between 0 and the current year.</param>
     /// <param name="quarter">The quarter for the report (1, 2, 3, or 4).</param>
     /// <returns>An action result containing the quarterly report or a validation problem.</returns>
     /// <response code="200">Returns the requested quarterly report.</response>
